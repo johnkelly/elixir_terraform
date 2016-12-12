@@ -1,0 +1,33 @@
+{
+  "variables": {
+    "aws_vpc_id":     "{{env `PACKER_meetup_aws_vpc_id`}}",
+    "aws_access_key": "{{env `TF_VAR_aws_access_key`}}",
+    "aws_secret_key": "{{env `TF_VAR_aws_secret_key`}}",
+    "aws_subnet_id":  "{{env `PACKER_meetup_subnet_id`}}"
+  },
+  "builders": [{
+    "access_key":                  "{{user `aws_access_key`}}",
+    "ami_name":                    "elixir {{timestamp}}",
+    "ami_virtualization_type":     "hvm",
+    "associate_public_ip_address": "true",
+    "instance_type":               "m3.medium",
+    "region":                      "us-east-1",
+    "secret_key":                  "{{user `aws_secret_key`}}",
+    "source_ami":                  "ami-40d28157",
+    "spot_price":                  "0.10",
+    "ssh_username":                "ubuntu",
+    "subnet_id":                   "{{user `aws_subnet_id`}}",
+    "type":                        "amazon-ebs",
+    "vpc_id":                      "{{user `aws_vpc_id`}}"
+  }],
+  "provisioners": [{
+    "inline": [
+      "sleep 30",
+      "wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && sudo dpkg -i erlang-solutions_1.0_all.deb",
+      "sudo sudo dpkg -i erlang-solutions_1.0_all.deb",
+      "sudo apt-get update",
+      "sudo apt-get install -y git esl-erlang elixir"
+    ],
+    "type": "shell"
+  }]
+}
