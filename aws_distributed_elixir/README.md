@@ -1,6 +1,7 @@
 # Distributed Elixir
 
 ## How to Run the infrastructure
+* Create an ssh key and upload it to AWS.
 * Set the below env variables in your .bash_profile and source it.
 * `cd packer`
 * Run `packer validate elixir.json` fix any errors 
